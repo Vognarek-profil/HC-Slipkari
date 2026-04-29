@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HC Slípkaři Velké Bílovice</title>
+<meta name="description" content="Oficiální web hokejového klubu HC Slípkaři Velké Bílovice — soupiska, zápasy, statistiky a galerie." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #141414;
+    --bg-3: #1c1c1c;
+    --line: #262626;
+    --text: #f4f4f4;
+    --muted: #9a9a9a;
+    --yellow: #ffcc00;
+    --yellow-2: #ffd633;
+    --red: #e2231a;
+    --red-2: #ff3a30;
+    --green: #2ecc71;
+    --grey: #6b6b6b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; line-height: 1.1; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* ---------- NAV ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--yellow), var(--red) 80%);
+    display: grid; place-items: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: #000;
+    border: 2px solid #000;
+    box-shadow: 0 0 0 2px var(--yellow);
+  }
+  .brand-text { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; }
+  .brand-text span { color: var(--yellow); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--yellow); }
+  .nav-toggle { display: none; background: none; border: 0; color: var(--text); font-size: 28px; cursor: pointer; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: grid; place-items: center;
+    text-align: center;
+    padding: 80px 24px;
+    background:
+      radial-gradient(ellipse at top, rgba(226,35,26,0.18), transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(255,204,0,0.12), transparent 60%),
+      var(--bg);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, transparent 0 40px, rgba(255,204,0,0.03) 40px 41px);
+    pointer-events: none;
+  }
+  .hero-stripes {
+    position: absolute; left: 0; right: 0; height: 8px;
+    background: linear-gradient(90deg, var(--red) 0 33%, #000 33% 66%, var(--yellow) 66% 100%);
+  }
+  .hero-stripes.top { top: 0; } .hero-stripes.bot { bottom: 0; }
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+  .hero-logo {
+    width: 180px; height: 180px; margin: 0 auto 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--yellow), var(--red) 75%);
+    display: grid; place-items: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 64px; color: #000;
+    border: 6px solid #000;
+    box-shadow: 0 0 0 6px var(--yellow), 0 20px 60px rgba(226,35,26,0.4);
+  }
+  .hero h1 {
+    font-size: clamp(56px, 10vw, 128px);
+    text-shadow: 4px 4px 0 var(--red);
+    margin-bottom: 8px;
+  }
+  .hero h1 .accent { color: var(--yellow); }
+  .hero-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(18px, 2vw, 24px);
+    letter-spacing: 6px; color: var(--muted);
+    margin-bottom: 40px;
+  }
+  .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 14px 32px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px;
+    border: 2px solid var(--yellow); color: var(--yellow);
+    background: transparent; cursor: pointer;
+    transition: all .2s; text-transform: uppercase;
+  }
+  .btn:hover { background: var(--yellow); color: #000; transform: translateY(-2px); }
+  .btn.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  .btn.primary:hover { background: var(--red-2); border-color: var(--red-2); color: #fff; }
+
+  /* ---------- SECTIONS ---------- */
+  section { padding: 96px 24px; position: relative; }
+  .container { max-width: 1280px; margin: 0 auto; }
+  .section-head { margin-bottom: 56px; text-align: center; }
+  .section-head .eyebrow {
+    display: inline-block; padding: 4px 12px;
+    background: var(--red); color: #fff; font-size: 12px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .section-head h2 {
+    font-size: clamp(40px, 6vw, 72px);
+    text-shadow: 3px 3px 0 var(--red);
+  }
+  .section-head h2 .accent { color: var(--yellow); }
+  .section-head p { color: var(--muted); max-width: 640px; margin: 16px auto 0; }
+
+  /* ---------- HISTORY ---------- */
+  #historie { background: var(--bg-2); }
+  .history-grid {
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: center;
+  }
+  .history-text p { margin-bottom: 16px; color: var(--muted); }
+  .history-text p strong { color: var(--text); }
+  .history-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    background: var(--bg-3); padding: 32px; border: 1px solid var(--line);
+    border-left: 4px solid var(--yellow);
+  }
+  .stat-box .num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 56px;
+    color: var(--yellow); line-height: 1;
+  }
+  .stat-box .label { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+
+  /* ---------- ROSTER ---------- */
+  .roster-controls {
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 40px;
+  }
+  .filter-btn {
+    padding: 8px 20px; background: var(--bg-2); border: 1px solid var(--line);
+    color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    transition: all .2s;
+  }
+  .filter-btn:hover { color: var(--yellow); border-color: var(--yellow); }
+  .filter-btn.active { background: var(--yellow); border-color: var(--yellow); color: #000; }
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .player-card {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 24px 20px;
+    text-align: center;
+    position: relative;
+    transition: transform .25s, border-color .25s;
+    overflow: hidden;
+  }
+  .player-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--red), var(--yellow));
+  }
+  .player-card:hover { transform: translateY(-4px); border-color: var(--yellow); }
+  .player-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px; line-height: 1; color: var(--yellow);
+    text-shadow: 2px 2px 0 var(--red);
+    margin: 8px 0;
+  }
+  .player-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+  .player-pos { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+
+  /* ---------- MATCHES / POLL ---------- */
+  #zapasy { background: var(--bg-2); }
+  .player-select {
+    max-width: 480px; margin: 0 auto 56px;
+    background: var(--bg-3); border: 1px solid var(--line);
+    border-left: 4px solid var(--red);
+    padding: 24px;
+  }
+  .player-select label {
+    display: block; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--muted); margin-bottom: 8px;
+  }
+  .player-select select {
+    width: 100%; padding: 12px; background: var(--bg);
+    border: 1px solid var(--line); color: var(--text);
+    font-size: 15px; font-family: inherit;
+  }
+  .player-select select:focus { outline: 2px solid var(--yellow); }
+  .matches-list { display: grid; gap: 24px; max-width: 920px; margin: 0 auto; }
+  .match-card {
+    background: var(--bg-3); border: 1px solid var(--line);
+    padding: 28px; display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 28px; align-items: center;
+    position: relative;
+  }
+  .match-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--yellow);
+  }
+  .match-date {
+    text-align: center; padding: 12px;
+    background: #000; border: 1px solid var(--line);
+  }
+  .match-date .day { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 1; color: var(--yellow); }
+  .match-date .month { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+  .match-date .time { font-size: 13px; margin-top: 8px; color: var(--text); font-weight: 600; }
+  .match-info h3 { font-size: 24px; margin-bottom: 4px; }
+  .match-info .opponent { color: var(--yellow); }
+  .match-info .place { font-size: 13px; color: var(--muted); }
+  .match-info .home-away {
+    display: inline-block; padding: 2px 8px; font-size: 11px;
+    background: var(--red); color: #fff; margin-left: 8px;
+    text-transform: uppercase; font-weight: 700; letter-spacing: 1px;
+  }
+  .match-actions { display: flex; gap: 8px; flex-direction: column; align-items: stretch; }
+  .vote-btn {
+    padding: 10px 20px; font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+    border: 2px solid; background: transparent; transition: all .2s;
+    min-width: 120px;
+  }
+  .vote-btn.yes { color: var(--green); border-color: var(--green); }
+  .vote-btn.yes.active, .vote-btn.yes:hover { background: var(--green); color: #000; }
+  .vote-btn.no { color: var(--red-2); border-color: var(--red-2); }
+  .vote-btn.no.active, .vote-btn.no:hover { background: var(--red-2); color: #fff; }
+  .match-roster {
+    grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--line);
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  }
+  .match-roster .group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .match-roster .group-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--muted); font-weight: 700; margin-right: 4px;
+  }
+  .match-roster .chip {
+    padding: 4px 10px; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--line); background: var(--bg-2);
+  }
+  .match-roster .chip.yes { border-color: var(--green); color: var(--green); }
+  .match-roster .chip.no { border-color: var(--red-2); color: var(--red-2); opacity: .7; }
+  .match-roster .count { color: var(--muted); font-size: 12px; }
+
+  /* ---------- STATS ---------- */
+  .stats-table {
+    background: var(--bg-2); border: 1px solid var(--line);
+    max-width: 800px; margin: 0 auto;
+  }
+  .stats-row {
+    display: grid; grid-template-columns: 60px 60px 1fr 80px 1fr;
+    align-items: center; padding: 16px 24px; gap: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .stats-row:last-child { border-bottom: 0; }
+  .stats-row.head {
+    background: #000; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--muted); font-weight: 700;
+  }
+  .stats-row .rank { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--yellow); }
+  .stats-row .num-col {
+    font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--text);
+    background: var(--red); width: 44px; height: 44px;
+    display: grid; place-items: center;
+  }
+  .stats-row .pct { font-weight: 700; color: var(--yellow); text-align: right; }
+  .stats-bar {
+    height: 8px; background: var(--bg-3); position: relative; overflow: hidden;
+  }
+  .stats-bar .fill {
+    height: 100%; background: linear-gradient(90deg, var(--red), var(--yellow));
+  }
+  .stats-row.podium-1 .rank { color: var(--yellow); font-size: 32px; }
+  .stats-row.podium-2 .rank { color: #c0c0c0; font-size: 28px; }
+  .stats-row.podium-3 .rank { color: #cd7f32; font-size: 26px; }
+
+  /* ---------- GALLERY ---------- */
+  #galerie { background: var(--bg-2); }
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .gallery-item {
+    position: relative; overflow: hidden; aspect-ratio: 4/3;
+    border: 1px solid var(--line); cursor: pointer;
+  }
+  .gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .4s;
+  }
+  .gallery-item:hover img { transform: scale(1.05); }
+  .gallery-item::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent 50%);
+    pointer-events: none;
+  }
+  .gallery-caption {
+    position: absolute; bottom: 12px; left: 12px;
+    z-index: 2; font-size: 13px; font-weight: 600;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    background: #000;
+    border-top: 4px solid var(--red);
+    padding: 48px 24px 24px;
+  }
+  .footer-grid {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+  }
+  .footer-brand p { color: var(--muted); margin-top: 16px; max-width: 380px; font-size: 14px; }
+  .footer-col h4 { font-size: 18px; margin-bottom: 16px; color: var(--yellow); letter-spacing: 2px; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 8px; font-size: 14px; color: var(--muted); }
+  .footer-col a:hover { color: var(--yellow); }
+  .footer-bottom {
+    max-width: 1280px; margin: 32px auto 0;
+    padding-top: 24px; border-top: 1px solid var(--line);
+    text-align: center; color: var(--grey); font-size: 12px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 880px) {
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; gap: 0; background: var(--bg-2);
+      border-bottom: 1px solid var(--line); padding: 16px 0;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 12px 24px; }
+    .nav-toggle { display: block; }
+    .history-grid { grid-template-columns: 1fr; gap: 32px; }
+    .match-card { grid-template-columns: 1fr; gap: 16px; }
+    .match-actions { flex-direction: row; }
+    .stats-row { grid-template-columns: 40px 50px 1fr 60px; }
+    .stats-row .stats-bar { display: none; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    section { padding: 64px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <div class="brand-mark">HC</div>
+      <div class="brand-text">HC <span>SLÍPKAŘI</span></div>
+    </a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="#historie">Historie</a>
+      <a href="#soupiska">Soupiska</a>
+      <a href="#zapasy">Zápasy</a>
+      <a href="#statistiky">Statistiky</a>
+      <a href="#galerie">Galerie</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-stripes top"></div>
+  <div class="hero-content">
+    <div class="hero-logo">HC</div>
+    <h1>HC <span class="accent">SLÍPKAŘI</span></h1>
+    <p class="hero-sub">VELKÉ BÍLOVICE — HOKEJ SE SRDCEM</p>
+    <div class="hero-cta">
+      <a href="#zapasy" class="btn primary">Nadcházející zápasy</a>
+      <a href="#soupiska" class="btn">Naše soupiska</a>
+    </div>
+  </div>
+  <div class="hero-stripes bot"></div>
+</header>
+
+<!-- ================= HISTORIE ================= -->
+<section id="historie">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">O klubu</span>
+      <h2>Historie <span class="accent">klubu</span></h2>
+      <p>Parta nadšenců z Velkých Bílovic, která spojuje hokej, srandu a chuť porazit kdejakého soupeře.</p>
+    </div>
+    <div class="history-grid">
+      <div class="history-text">
+        <p><strong>HC Slípkaři</strong> jsou amatérský hokejový klub z Velkých Bílovic, který vznikl jako parta kamarádů, co se chtěla pravidelně potkávat na ledě.</p>
+        <p>Za roky existence z jednoho zápasu na turnaji vyrostla skupina hráčů s vlastními dresy, vlastní identitou a hlavně se vzájemnou partou, která drží i mimo led.</p>
+        <p>Naše barvy — <strong style="color:var(--red)">červená</strong>, <strong style="color:var(--yellow)">žlutá</strong> a <strong>černá</strong> — symbolizují odvahu, energii a tvrdou práci. Logo naštvaného kohouta s hokejkami pak naši bojovnost a moravský původ.</p>
+        <p>Dnes hrajeme přátelská utkání i amatérské ligy v regionu a vždycky jdeme na led s tím, že vyhrajeme — nebo se aspoň pořádně pobavíme.</p>
+        <p style="font-style: italic; color: var(--yellow); margin-top: 24px;">„Slípka je možná malá — ale když je nasraná, je nebezpečná."</p>
+      </div>
+      <div class="history-stats">
+        <div class="stat-box">
+          <div class="num">25+</div>
+          <div class="label">Hráčů v kádru</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">∞</div>
+          <div class="label">Třetích třetin</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">3</div>
+          <div class="label">Klubové barvy</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">1</div>
+          <div class="label">Velkobílovická parta</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOUPISKA ================= -->
+<section id="soupiska">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Tým</span>
+      <h2>Naše <span class="accent">soupiska</span></h2>
+      <p>Jména a čísla jsou zatím orientační — uprav si je podle reality. Filtruj podle pozice.</p>
+    </div>
+    <div class="roster-controls" id="rosterFilters">
+      <button class="filter-btn active" data-filter="all">Všichni</button>
+      <button class="filter-btn" data-filter="brankar">Brankáři</button>
+      <button class="filter-btn" data-filter="obrance">Obránci</button>
+      <button class="filter-btn" data-filter="utocnik">Útočníci</button>
+    </div>
+    <div class="roster-grid" id="rosterGrid"></div>
+  </div>
+</section>
+
+<!-- ================= ZÁPASY / ANKETA ================= -->
+<section id="zapasy">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Anketa</span>
+      <h2>Nadcházející <span class="accent">zápasy</span></h2>
+      <p>Vyber si v rozbalovacím menu sebe a u každého zápasu klikni, jestli jdeš nebo ne. Ze zaškrtnutí se počítá statistika docházky.</p>
+    </div>
+    <div class="player-select">
+      <label for="currentPlayer">Hraju jako:</label>
+      <select id="currentPlayer">
+        <option value="">— Vyber svoje jméno —</option>
+      </select>
+    </div>
+    <div class="matches-list" id="matchesList"></div>
+  </div>
+</section>
+
+<!-- ================= STATISTIKY ================= -->
+<section id="statistiky">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Docházka</span>
+      <h2>Statistiky <span class="accent">účasti</span></h2>
+      <p>Žebříček hráčů podle účasti na zápasech. Procento se počítá z nadcházejících zápasů, kde hráč potvrdil "JDU".</p>
+    </div>
+    <div class="stats-table">
+      <div class="stats-row head">
+        <div>Pořadí</div>
+        <div>Číslo</div>
+        <div>Hráč</div>
+        <div style="text-align:right">Účast</div>
+        <div></div>
+      </div>
+      <div id="statsBody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALERIE ================= -->
+<section id="galerie">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Foto</span>
+      <h2>Galerie <span class="accent">klubu</span></h2>
+      <p>Naše dresy, sezóny a momenty na ledě.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="Foto/WhatsApp Image 2026-02-11 at 11.28.47.jpeg" alt="Klubové dresy HC Slípkaři" loading="lazy">
+        <div class="gallery-caption">Domácí a hostující dresy</div>
+      </div>
+      <div class="gallery-item">
+        <img src="Foto/WhatsApp Image 2026-04-27 at 17.59.07.jpeg" alt="Žlutý dres s logem" loading="lazy">
+        <div class="gallery-caption">Žlutý dres — přední strana</div>
+      </div>
+      <div class="gallery-item">
+        <img src="Foto/WhatsApp Image 2026-04-27 at 18.03.28.jpeg" alt="Dres číslo 19 HRDÝ" loading="lazy">
+        <div class="gallery-caption">Dres č. 19 — Hrdý</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER / KONTAKT ================= -->
+<footer id="kontakt">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand">
+        <div class="brand-mark">HC</div>
+        <div class="brand-text">HC <span style="color:var(--yellow)">SLÍPKAŘI</span></div>
+      </div>
+      <p>Amatérský hokejový klub z Velkých Bílovic. Hrajeme srdcem, smějeme se v šatně a vyhráváme — někdy.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Sekce</h4>
+      <ul>
+        <li><a href="#historie">Historie</a></li>
+        <li><a href="#soupiska">Soupiska</a></li>
+        <li><a href="#zapasy">Zápasy</a></li>
+        <li><a href="#statistiky">Statistiky</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <ul>
+        <li>Velké Bílovice</li>
+        <li>Jihomoravský kraj</li>
+        <li>info@hcslipkari.cz</li>
+        <li>(doplň reálný kontakt)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © <span id="year"></span> HC Slípkaři Velké Bílovice — všechna práva vyhrazena.
+  </div>
+</footer>
+
+<script>
+/* ========== DATA (zatím placeholder) ========== */
+const ROSTER = [
+  { num: 1,  name: 'Jan Novák',     pos: 'brankar' },
+  { num: 30, name: 'Petr Svoboda',  pos: 'brankar' },
+  { num: 2,  name: 'Tomáš Dvořák',  pos: 'obrance' },
+  { num: 4,  name: 'Marek Černý',   pos: 'obrance' },
+  { num: 5,  name: 'Lukáš Procházka', pos: 'obrance' },
+  { num: 6,  name: 'Jakub Veselý',  pos: 'obrance' },
+  { num: 7,  name: 'Ondřej Horák',  pos: 'obrance' },
+  { num: 8,  name: 'Pavel Kučera',  pos: 'obrance' },
+  { num: 9,  name: 'Radek Pokorný', pos: 'utocnik' },
+  { num: 10, name: 'Martin Beneš',  pos: 'utocnik' },
+  { num: 11, name: 'David Růžička', pos: 'utocnik' },
+  { num: 12, name: 'Filip Marek',   pos: 'utocnik' },
+  { num: 13, name: 'Karel Novotný', pos: 'utocnik' },
+  { num: 14, name: 'Michal Urban',  pos: 'utocnik' },
+  { num: 15, name: 'Jiří Kratochvíl', pos: 'utocnik' },
+  { num: 17, name: 'Daniel Polák',  pos: 'utocnik' },
+  { num: 18, name: 'Roman Sedlák',  pos: 'utocnik' },
+  { num: 19, name: 'Pavel Hrdý',    pos: 'utocnik' },
+  { num: 20, name: 'Aleš Kovář',    pos: 'utocnik' },
+  { num: 21, name: 'Václav Holub',  pos: 'obrance' },
+  { num: 22, name: 'Ivo Štěpán',    pos: 'utocnik' },
+  { num: 23, name: 'Tadeáš Vlk',    pos: 'utocnik' },
+  { num: 24, name: 'Adam Šimek',    pos: 'utocnik' },
+  { num: 27, name: 'Patrik Doležal', pos: 'utocnik' },
+  { num: 91, name: 'Robert Mareš',  pos: 'utocnik' }
+];
+
+const MATCHES = [
+  { id: 'm1', date: '2026-05-10', time: '18:00', opponent: 'HC Lední medvědi Hodonín', place: 'Velké Bílovice', home: true  },
+  { id: 'm2', date: '2026-05-17', time: '19:30', opponent: 'HC Břeclavské lišky',     place: 'Břeclav',         home: false },
+  { id: 'm3', date: '2026-05-24', time: '17:00', opponent: 'Sršni Mikulov',            place: 'Velké Bílovice', home: true  },
+  { id: 'm4', date: '2026-06-07', time: '18:30', opponent: 'HC Vinaři Velkopavlovicko', place: 'Velké Pavlovice', home: false },
+  { id: 'm5', date: '2026-06-14', time: '19:00', opponent: 'HC Draci Lanžhot',         place: 'Velké Bílovice', home: true  }
+];
+
+const POS_LABEL = { brankar: 'Brankář', obrance: 'Obránce', utocnik: 'Útočník' };
+const STORAGE_KEY = 'hcslipkari_votes_v1';
+const PLAYER_KEY  = 'hcslipkari_currentplayer_v1';
+
+/* ========== STORAGE ========== */
+function loadVotes() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveVotes(v) { localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
+let votes = loadVotes(); // { matchId: { playerNum: 'yes' | 'no' } }
+
+/* ========== RENDER: SOUPISKA ========== */
+function renderRoster(filter='all') {
+  const grid = document.getElementById('rosterGrid');
+  const list = filter === 'all' ? ROSTER : ROSTER.filter(p => p.pos === filter);
+  grid.innerHTML = list.map(p => `
+    <div class="player-card" data-pos="${p.pos}">
+      <div class="player-num">${p.num}</div>
+      <div class="player-name">${p.name}</div>
+      <div class="player-pos">${POS_LABEL[p.pos]}</div>
+    </div>
+  `).join('');
+}
+document.getElementById('rosterFilters').addEventListener('click', e => {
+  if (!e.target.matches('.filter-btn')) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderRoster(e.target.dataset.filter);
+});
+
+/* ========== RENDER: PLAYER SELECT ========== */
+function renderPlayerSelect() {
+  const sel = document.getElementById('currentPlayer');
+  const sorted = [...ROSTER].sort((a,b) => a.name.localeCompare(b.name, 'cs'));
+  sorted.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.num;
+    opt.textContent = `#${p.num} — ${p.name}`;
+    sel.appendChild(opt);
+  });
+  const stored = localStorage.getItem(PLAYER_KEY);
+  if (stored) sel.value = stored;
+  sel.addEventListener('change', () => {
+    localStorage.setItem(PLAYER_KEY, sel.value);
+    renderMatches();
+  });
+}
+
+/* ========== RENDER: ZÁPASY ========== */
+const MONTHS = ['LED','ÚNO','BŘE','DUB','KVĚ','ČVN','ČVC','SRP','ZÁŘ','ŘÍJ','LIS','PRO'];
+function renderMatches() {
+  const list = document.getElementById('matchesList');
+  const me = document.getElementById('currentPlayer').value;
+  list.innerHTML = MATCHES.map(m => {
+    const d = new Date(m.date);
+    const day = d.getDate();
+    const month = MONTHS[d.getMonth()];
+    const matchVotes = votes[m.id] || {};
+    const myVote = me ? matchVotes[me] : null;
+    const yesPlayers = ROSTER.filter(p => matchVotes[p.num] === 'yes');
+    const noPlayers  = ROSTER.filter(p => matchVotes[p.num] === 'no');
+
+    return `
+      <div class="match-card">
+        <div class="match-date">
+          <div class="day">${day}</div>
+          <div class="month">${month}</div>
+          <div class="time">${m.time}</div>
+        </div>
+        <div class="match-info">
+          <h3>HC Slípkaři <span style="color:var(--muted)">vs</span> <span class="opponent">${m.opponent}</span><span class="home-away">${m.home ? 'Domácí' : 'Venku'}</span></h3>
+          <div class="place">📍 ${m.place}</div>
+        </div>
+        <div class="match-actions">
+          <button class="vote-btn yes ${myVote==='yes'?'active':''}"
+                  ${me?'':'disabled'} data-match="${m.id}" data-vote="yes">
+            ✓ Jdu (${yesPlayers.length})
+          </button>
+          <button class="vote-btn no ${myVote==='no'?'active':''}"
+                  ${me?'':'disabled'} data-match="${m.id}" data-vote="no">
+            ✗ Nejdu (${noPlayers.length})
+          </button>
+        </div>
+        <div class="match-roster">
+          <div class="group">
+            <span class="group-label" style="color:var(--green)">Jdou:</span>
+            ${yesPlayers.length
+              ? yesPlayers.map(p => `<span class="chip yes">#${p.num} ${p.name.split(' ')[0]}</span>`).join('')
+              : '<span class="count">zatím nikdo</span>'}
+          </div>
+          <div class="group">
+            <span class="group-label" style="color:var(--red-2)">Nejdou:</span>
+            ${noPlayers.length
+              ? noPlayers.map(p => `<span class="chip no">#${p.num} ${p.name.split(' ')[0]}</span>`).join('')
+              : '<span class="count">zatím nikdo</span>'}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  list.querySelectorAll('.vote-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mid = btn.dataset.match;
+      const vote = btn.dataset.vote;
+      const player = document.getElementById('currentPlayer').value;
+      if (!player) { alert('Nejdřív si vyber svoje jméno v rozbalovacím menu nahoře.'); return; }
+      if (!votes[mid]) votes[mid] = {};
+      if (votes[mid][player] === vote) delete votes[mid][player];
+      else votes[mid][player] = vote;
+      saveVotes(votes);
+      renderMatches();
+      renderStats();
+    });
+  });
+}
+
+/* ========== RENDER: STATISTIKY ========== */
+function renderStats() {
+  const total = MATCHES.length;
+  const ranked = ROSTER.map(p => {
+    let yes = 0;
+    MATCHES.forEach(m => { if (votes[m.id] && votes[m.id][p.num] === 'yes') yes++; });
+    return { ...p, yes, pct: total ? Math.round((yes/total)*100) : 0 };
+  }).sort((a,b) => b.yes - a.yes || a.num - b.num);
+
+  const body = document.getElementById('statsBody');
+  body.innerHTML = ranked.map((p, i) => {
+    const podium = i < 3 ? `podium-${i+1}` : '';
+    return `
+      <div class="stats-row ${podium}">
+        <div class="rank">${i+1}.</div>
+        <div class="num-col">${p.num}</div>
+        <div>${p.name}<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${POS_LABEL[p.pos]}</div></div>
+        <div class="pct">${p.yes}/${total} · ${p.pct}%</div>
+        <div class="stats-bar"><div class="fill" style="width:${p.pct}%"></div></div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ========== INIT ========== */
+document.getElementById('year').textContent = new Date().getFullYear();
+renderRoster();
+renderPlayerSelect();
+renderMatches();
+renderStats();
+
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+</script>
+
+</body>
+</html>
